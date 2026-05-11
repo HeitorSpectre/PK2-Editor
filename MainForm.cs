@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using PK2Editor.PK2;
@@ -174,6 +175,11 @@ public sealed class MainForm : Form
         });
 
         menu.Items.Add(file);
+        var about = new ToolStripMenuItem("&About", null, (_, _) => ShowAboutDialog())
+        {
+            Alignment = ToolStripItemAlignment.Right,
+        };
+        menu.Items.Add(about);
         return menu;
     }
 
@@ -975,6 +981,93 @@ public sealed class MainForm : Form
     }
 
     // ---- misc actions ----------------------------------------------------
+
+    private void ShowAboutDialog()
+    {
+        const string docsUrl = "https://telltale-editor.gitbook.io/documentation-for-the-telltale-editor/core-documentation/meta-system";
+        const string heitorUrl = "https://github.com/HeitorSpectre";
+        const string lucasUrl = "https://github.com/LucasSaragosa";
+
+        using var dlg = new Form
+        {
+            Text = "About PK2 Editor",
+            Width = 560,
+            Height = 300,
+            FormBorderStyle = FormBorderStyle.FixedDialog,
+            MaximizeBox = false,
+            MinimizeBox = false,
+            StartPosition = FormStartPosition.CenterParent,
+        };
+
+        var title = new Label
+        {
+            Text = "PK2 Editor",
+            AutoSize = false,
+            Font = new Font("Segoe UI", 14F, FontStyle.Bold),
+            Location = new Point(18, 18),
+            Size = new Size(500, 30),
+        };
+
+        var creditLine = new LinkLabel
+        {
+            Text = "Made by Heitor Spectre.",
+            Font = new Font("Segoe UI", 9.5F),
+            Location = new Point(20, 58),
+            Size = new Size(500, 24),
+        };
+        creditLine.Links.Add(8, "Heitor Spectre".Length, heitorUrl);
+        creditLine.LinkClicked += (_, e) => OpenUrl((string)e.Link!.LinkData!);
+
+        var thanks = new LinkLabel
+        {
+            Text = "Very special thanks to Lucas Saragosa. This tool would not exist without his discoveries and perfect documentation about Telltale's meta system.",
+            Font = new Font("Segoe UI", 9.5F),
+            Location = new Point(20, 86),
+            Size = new Size(500, 60),
+        };
+        thanks.Links.Add("Very special thanks to ".Length, "Lucas Saragosa".Length, lucasUrl);
+        thanks.LinkClicked += (_, e) => OpenUrl((string)e.Link!.LinkData!);
+
+        var docsLink = new LinkLabel
+        {
+            Text = docsUrl,
+            Location = new Point(20, 154),
+            Size = new Size(500, 40),
+            AutoEllipsis = true,
+        };
+        docsLink.Links.Add(0, docsUrl.Length, docsUrl);
+        docsLink.LinkClicked += (_, e) => OpenUrl((string)e.Link!.LinkData!);
+
+        var ok = new Button
+        {
+            Text = "OK",
+            DialogResult = DialogResult.OK,
+            Location = new Point(446, 218),
+            Size = new Size(80, 28),
+        };
+
+        dlg.AcceptButton = ok;
+        dlg.CancelButton = ok;
+        dlg.Controls.Add(title);
+        dlg.Controls.Add(creditLine);
+        dlg.Controls.Add(thanks);
+        dlg.Controls.Add(docsLink);
+        dlg.Controls.Add(ok);
+        dlg.ShowDialog(this);
+
+        void OpenUrl(string url)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"Could not open the link:\n\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+    }
 
     private void CopySelectedPath()
     {
