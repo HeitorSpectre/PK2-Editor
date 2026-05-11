@@ -2,7 +2,7 @@
 
 PK2 Editor is a tool for browsing, extracting, and reinserting files from `.pk2` archives used by *CSI: 3 Dimensions of Murder* for PlayStation 2, developed by Telltale Games and published by Ubisoft.
 
-The tool was created to help analyze and modify the game's `GameData.pk2` container, including support for known file mappings, unnamed hashed entries, folder navigation, batch extraction, and selective file reinsertion for modding and translation work.
+The tool was created to help analyze and modify the game's `GameData.pk2` container, including support for folder navigation, batch extraction, and selective file reinsertion for modding and translation work.
 
 ## Supported Games
 
