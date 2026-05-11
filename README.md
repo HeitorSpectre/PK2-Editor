@@ -28,4 +28,5 @@ PK2 Editor was made by [Heitor Spectre](https://github.com/HeitorSpectre).
 Very special thanks to [Lucas Saragosa](https://github.com/LucasSaragosa). This tool would not exist without his discoveries and the excellent documentation about Telltale's meta system:
 
 https://github.com/LucasSaragosa/Telltale-Editor
+
 https://telltale-editor.gitbook.io/documentation-for-the-telltale-editor/core-documentation/meta-system
